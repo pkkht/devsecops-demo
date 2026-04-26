@@ -1,8 +1,8 @@
 # ============================================================
 # DevSecOps Demo — requirements.txt
 #
-# These packages are INTENTIONALLY outdated.
-# Snyk (SCA) will flag CVEs in these versions in Episode 4.
+# These packages are INTENTIONALLY outdated with known CVEs.
+# Do NOT use these versions in production.
 # ============================================================
 
 # Flask 1.1.2 — outdated, known vulnerabilities
