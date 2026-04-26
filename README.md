@@ -1,6 +1,5 @@
 # DevSecOps Demo App
 
-A simple Python Flask task manager API used throughout the **DevSecOps Pipeline in Azure DevOps** YouTube series.
 
 > ⚠️ This app contains **intentional security vulnerabilities** for demo purposes. Do not deploy to production.
 
