@@ -34,3 +34,4 @@ Thumbs.db
 bandit-report.json
 pip-audit-report.json
 checkov-report.json
+trivy-report.json
