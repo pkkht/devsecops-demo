@@ -2,7 +2,7 @@
 # DevSecOps Demo — Terraform
 #
 # This file contains INTENTIONAL misconfigurations.
-# Checkov (IaC scan) will flag these in Episode 7.
+# Do NOT deploy this to production.
 # ============================================================
 
 provider "aws" {
@@ -12,6 +12,7 @@ provider "aws" {
 # ----------------------------------------------------------
 # MISCONFIGURATION 1: S3 bucket without server-side encryption
 # Checkov rule: CKV_AWS_19
+# All data stored in this bucket is unencrypted at rest.
 # The fix: add a aws_s3_bucket_server_side_encryption_configuration block.
 # ----------------------------------------------------------
 resource "aws_s3_bucket" "app_storage" {
@@ -26,8 +27,8 @@ resource "aws_s3_bucket" "app_storage" {
 # ----------------------------------------------------------
 # MISCONFIGURATION 2: S3 bucket set to public-read
 # Checkov rule: CKV_AWS_20
-# This exposes all objects in the bucket to the public internet.
-# The fix: set acl = "private" and use bucket policies for access.
+# Exposes all objects in the bucket to the public internet.
+# The fix: set acl = "private" and use bucket policies for access control.
 # ----------------------------------------------------------
 resource "aws_s3_bucket_acl" "app_storage_acl" {
   bucket = aws_s3_bucket.app_storage.id
@@ -37,13 +38,14 @@ resource "aws_s3_bucket_acl" "app_storage_acl" {
 # ----------------------------------------------------------
 # MISCONFIGURATION 3: S3 bucket versioning not enabled
 # Checkov rule: CKV_AWS_21
+# Without versioning, deleted or overwritten objects cannot be recovered.
 # The fix: add aws_s3_bucket_versioning with status = "Enabled"
 # ----------------------------------------------------------
 
 # ----------------------------------------------------------
 # MISCONFIGURATION 4: Security group open to 0.0.0.0/0 on ALL ports
 # Checkov rule: CKV_AWS_25, CKV_AWS_24
-# This allows any IP address to connect on any port.
+# Allows any IP address to connect on any port.
 # The fix: restrict ingress to specific ports (e.g. 443, 80)
 # and restrict source CIDR to known ranges.
 # ----------------------------------------------------------
@@ -73,6 +75,7 @@ resource "aws_security_group" "app_sg" {
 # ----------------------------------------------------------
 # MISCONFIGURATION 5: EC2 with unencrypted EBS root volume
 # Checkov rule: CKV_AWS_8
+# Data written to the root volume is stored unencrypted.
 # The fix: set encrypted = true on the root_block_device.
 # ----------------------------------------------------------
 resource "aws_instance" "app_server" {
@@ -88,7 +91,7 @@ resource "aws_instance" "app_server" {
   # ----------------------------------------------------------
   # MISCONFIGURATION 6: No IMDSv2 enforcement
   # Checkov rule: CKV_AWS_79
-  # IMDSv2 prevents SSRF attacks from reaching the metadata service.
+  # Without IMDSv2, SSRF attacks can reach the instance metadata service.
   # The fix: add metadata_options { http_tokens = "required" }
   # ----------------------------------------------------------
 
