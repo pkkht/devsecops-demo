@@ -17,9 +17,6 @@ Werkzeug==1.0.1
 # requests 2.20.0 — CVE-2018-18074 (credentials leakage)
 requests==2.20.0
 
-# Pillow 8.1.1 — multiple CVEs including CVE-2021-25291
-Pillow==8.1.1
-
 # itsdangerous 1.1.0 — outdated
 itsdangerous==1.1.0
 
