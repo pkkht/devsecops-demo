@@ -33,3 +33,4 @@ Thumbs.db
 *.swp
 bandit-report.json
 pip-audit-report.json
+checkov-report.json
